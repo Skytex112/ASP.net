@@ -1,0 +1,11 @@
+﻿@model ASP1hw.DTO.ProductDTO
+
+<h2>Додати продукт</h2>
+<form asp-action="Add" method="post">
+    <label>Назва:</label>
+    <input asp-for="Name" />
+    <label>Ціна:</label>
+    <input asp-for="Price" />
+    <button type="submit">Додати</button>
+</form>
+<a asp-action="Search">Перейти до пошуку</a>
