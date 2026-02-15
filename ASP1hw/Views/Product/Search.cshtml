@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ASP1hw.Models.Product>
+
+<h2>Пошук продукту</h2>
+<form asp-action="Search" method="get">
+    <label>Назва:</label>
+    <input name="name" />
+    <button type="submit">Пошук</button>
+</form>
+
+@if (Model.Any())
+{
+    <table>
+        <tr><th>ID</th><th>Назва</th><th>Ціна</th></tr>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>Продуктів не знайдено.</p>
+}
+<a asp-action="Add">Додати новий продукт</a>
+<a asp-action="Delete">Видалити продукт</a>
