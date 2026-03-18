@@ -14,6 +14,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=products.db"));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=orders.db"));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

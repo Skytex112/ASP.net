@@ -9,6 +9,7 @@ namespace Middleware.Mapping
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
         }
     }
 }
