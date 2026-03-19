@@ -16,13 +16,15 @@ namespace ProductCQRS.Controllers
         private readonly AppSettingProfile _appSettings;
         private readonly PaginationProfile _pagination;
         private readonly AdminProfile _adminProfile;
+        private readonly ILogger _logger;
 
-        public ProductController(IMediator mediator,IOptions<AppSettingProfile> options,IOptions<AdminProfile> roleOptions, IOptions<PaginationProfile> paginationOptions)
+        public ProductController(IMediator mediator,IOptions<AppSettingProfile> options,IOptions<AdminProfile> roleOptions, IOptions<PaginationProfile> paginationOptions, ILogger logger)
         {
             _mediator = mediator;
             _appSettings = options.Value;
             _pagination = paginationOptions.Value;
             _adminProfile = roleOptions.Value;
+            _logger = logger;
         }
         [HttpGet]
         public ActionResult GetConfig()
@@ -58,6 +60,7 @@ namespace ProductCQRS.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
+            _logger.LogInformation("get all products...");
             var result = await _mediator.Send(new GetAllProductsQueryRequest());
             return Ok(result);
         }
@@ -65,8 +68,10 @@ namespace ProductCQRS.Controllers
         public async Task<IActionResult> Create([FromBody] GetAllProductsQueryRequest request)
         {
             var result = await _mediator.Send(request);
+            _logger.LogInformation("Creating product...");
             if (!result.IsSuccess)
             {
+                _logger.LogError($"Product {request.Name} already exist");
                 return BadRequest(result);
             }
             return Ok(result);
