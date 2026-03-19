@@ -6,5 +6,7 @@
         public DateTime Date { get; set; }
         public string CustomerName { get; set; }
         public decimal TotalAmount { get; set; }
+        public List<OrderItemDto> Items { get; set; }
+
     }
 }

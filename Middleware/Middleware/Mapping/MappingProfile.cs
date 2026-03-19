@@ -10,6 +10,7 @@ namespace Middleware.Mapping
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
         }
     }
 }

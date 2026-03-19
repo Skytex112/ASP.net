@@ -4,6 +4,7 @@ using AutoMapper;
 using Middleware.Data;
 using Middleware.Models;
 using Middleware.DTO;
+using Middleware.Paganation;
 using System;
 using System.Threading.Tasks;
 
@@ -35,11 +36,25 @@ namespace Middleware.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int pageNumber = 1, int pageSize = 10)
         {
-            var orders = await _context.Orders.ToListAsync();
-            return Ok(_mapper.Map<OrderDto[]>(orders));
+            var query = _context.Orders
+                .Include(o => o.Items)
+                .AsQueryable();
+
+            var pagedResult = await Paginations.PaginateAsync(query, pageNumber, pageSize);
+
+            var result = new
+            {
+                pagedResult.TotalCount,
+                pagedResult.PageNumber,
+                pagedResult.PageSize,
+                Data = _mapper.Map<List<OrderDto>>(pagedResult.Data)
+            };
+
+            return Ok(result);
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
