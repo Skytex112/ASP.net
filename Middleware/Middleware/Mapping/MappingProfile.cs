@@ -9,8 +9,10 @@ namespace Middleware.Mapping
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
+            CreateMap<ProductPhoto, ProductPhotoDto>().ReverseMap();
         }
     }
 }

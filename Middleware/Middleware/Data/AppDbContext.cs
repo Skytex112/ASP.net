@@ -12,6 +12,7 @@ namespace Middleware.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ProductPhoto> ProductPhotos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,8 +20,11 @@ namespace Middleware.Data
                 .HasMany(o => o.Items)
                 .WithOne(i => i.Order)
                 .HasForeignKey(i => i.OrderId);
+            modelBuilder.Entity<OrderItem>()
+                .HasMany(i => i.Photos)
+                .WithOne(p => p.OrderItem)
+                .HasForeignKey(p => p.OrderItemId);
+
         }
-
-
     }
 }
