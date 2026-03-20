@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using WebApplication5.Data;
 using WebApplication5.Repositories;
 using WebApplication5.Repositories.Interfaces;
 using WebApplication5.Services;
@@ -11,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
