@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using TeaShop.Mapping;
 using TeaShop.CQRS.Command;
 using TeaShop.Data;
 using TeaShop.DTO;
@@ -11,9 +11,9 @@ namespace TeaShop.CQRS.Handlers
     public class CreateTeaHandler : IRequestHandler<CreateTeaCommand, TeaDto>
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ISimpleMapper _mapper;
 
-        public CreateTeaHandler(AppDbContext context, IMapper mapper)
+        public CreateTeaHandler(AppDbContext context, ISimpleMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -21,10 +21,10 @@ namespace TeaShop.CQRS.Handlers
 
         public async Task<TeaDto> Handle(CreateTeaCommand request, CancellationToken cancellationToken)
         {
-            var tea = _mapper.Map<Tea>(request);
+            var tea = _mapper.MapToTea(request);
             _context.Teas.Add(tea);
             await _context.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<TeaDto>(tea);
+            return _mapper.MapToDto(tea);
         }
     }
 }

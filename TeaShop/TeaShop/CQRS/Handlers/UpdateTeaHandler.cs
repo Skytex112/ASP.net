@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using TeaShop.Mapping;
 using MediatR;
 using TeaShop.CQRS.Command;
 using TeaShop.Data;
@@ -9,9 +9,9 @@ namespace TeaShop.CQRS.Handlers
     public class UpdateTeaHandler : IRequestHandler<UpdateTeaCommand, TeaDto>
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ISimpleMapper _mapper;
 
-        public UpdateTeaHandler(AppDbContext context, IMapper mapper)
+        public UpdateTeaHandler(AppDbContext context, ISimpleMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -22,9 +22,9 @@ namespace TeaShop.CQRS.Handlers
             var tea = await _context.Teas.FindAsync(request.Id);
             if (tea == null) return null;
 
-            _mapper.Map(request, tea);
+            _mapper.MapToTea(request, tea);
             await _context.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<TeaDto>(tea);
+            return _mapper.MapToDto(tea);
         }
     }
 }

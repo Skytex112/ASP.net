@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TeaShop.CQRS.Command;
 using TeaShop.CQRS.Queries;

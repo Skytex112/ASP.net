@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using System.Linq;
+using TeaShop.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TeaShop.CQRS.Queries;
@@ -12,9 +12,9 @@ namespace TeaShop.CQRS.Handlers
     public class GetTeasHandler : IRequestHandler<GetTeasQuery, PagedResult<TeaDto>>
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ISimpleMapper _mapper;
 
-        public GetTeasHandler(AppDbContext context, IMapper mapper)
+        public GetTeasHandler(AppDbContext context, ISimpleMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -28,7 +28,7 @@ namespace TeaShop.CQRS.Handlers
             var items = await query
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .ProjectTo<TeaDto>(_mapper.ConfigurationProvider)
+                .Select(t => _mapper.MapToDto(t))
                 .ToListAsync(cancellationToken);
 
             return new PagedResult<TeaDto>
